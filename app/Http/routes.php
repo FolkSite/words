@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('polls', 'PollsController');
+Route::resource('polls.words', 'WordsController');
