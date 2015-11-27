@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
 
-    <link href="/css/app.css" rel="stylesheet">
-    <style>
-      .content {margin:auto 30px}
-      label{display:block}
-    </style>
+    {!! HTML::style('assets/css/common.css') !!}
 
     <!-- Fonts -->
     <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -58,11 +54,23 @@
     </nav>
 
     <div class="content">
+      @if (Session::has('message'))
+        <div class="flash alert-info">
+          <p>{{ Session::get('message') }}</p>
+        </div>
+      @endif
+      @if ($errors->any())
+        <div class="flash alert-danger">
+          @foreach ( $errors->all() as $error )
+            <p>{{ $error }}</p>
+          @endforeach
+        </div>
+      @endif
       @yield('content')
     </div>
 
     <!-- Scripts -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
   </body>
 </html>

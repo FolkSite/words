@@ -1,8 +1,11 @@
 @extends('app')
 
 @section('content')
-    <h2>{{ $poll->name }}</h2>
-    <p>{{ $poll->description or 'no description' }}</p>
+  <h1>{{ $poll->name }}</h1>
+  {!! Form::model(new App\Word, ['route' => ['polls.words.store', $poll->id], 'class' => 'form-inline']) !!}
+    @include('words/partials/_form', ['submit_text' => 'Create Word'])
+  {!! Form::close() !!}
+  <p>{{ $poll->description or 'no description' }}</p>
 
     @if ( !$poll->words->count() )
         Your poll has no words.

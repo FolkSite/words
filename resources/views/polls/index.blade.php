@@ -20,4 +20,5 @@
             @endforeach
         </ul>
     @endif
+    {!! link_to_route('polls.create', 'Create Poll') !!}
 @endsection

@@ -6,8 +6,14 @@ use App\Poll;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Input;
+use Redirect;
 
 class PollsController extends Controller {
+  
+  protected $rules = [
+    'name' => ['required', 'max:255'],
+  ];
 
   /**
    * Display a listing of the resource.
@@ -35,9 +41,14 @@ class PollsController extends Controller {
    * @return \Illuminate\Http\Response
    */
   public function store(Request $request) {
-    //
-  }
+    $this->validate($request, $this->rules);
+    
+    $input = Input::all();
+    Poll::create($input);
 
+    return Redirect::route('polls.index')->with('message', 'Poll created');
+  }
+  
   /**
    * Display the specified resource.
    *
@@ -51,32 +62,39 @@ class PollsController extends Controller {
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  int  $id
+   * @param  \App\Poll $poll
    * @return \Illuminate\Http\Response
    */
-  public function edit($id) {
-    //
+  public function edit(Poll $poll) {
+    return view('polls.edit', compact('poll'));
   }
 
   /**
    * Update the specified resource in storage.
    *
+   * @param  \App\Poll $poll
    * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id) {
-    //
+  public function update(Poll $poll, Request $request) {
+    $this->validate($request, $this->rules);
+    
+    $input = array_except(Input::all(), '_method');
+    $poll->update($input);
+    
+    return Redirect::route('polls.show', $poll)->with('message', 'Poll updated.');
   }
 
   /**
    * Remove the specified resource from storage.
    *
-   * @param  int  $id
+   * @param  \App\Poll $poll
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id) {
-    //
+  public function destroy(Poll $poll) {
+    $poll->delete();
+ 
+    return Redirect::route('polls.index')->with('message', 'Poll deleted.');
   }
 
 }
